@@ -7,7 +7,7 @@ networks:
     external: false
 
 services:
-  backdjango:
+  biobackdjango:
     build: .
     command: python manage.py runserver 0.0.0.0:3000
     ports:
