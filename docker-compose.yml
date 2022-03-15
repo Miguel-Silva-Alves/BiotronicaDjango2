@@ -1,0 +1,38 @@
+version: "3.8"
+
+networks:
+  internet:
+    external: true
+  internal:
+    external: false
+
+services:
+  backdjango:
+    build: .
+    command: python manage.py runserver 0.0.0.0:3000
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    networks:
+      - internal
+      - internet
+    labels:
+      - traefik.backend=backdjango
+      - traefik.frontend.rule=Host:cliente.biotronica.tech
+      - traefik.docker.network=internet
+      - traefik.port=3000
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres_biotronica
+      - POSTGRES_PASSWORD=!/>m:29qC]q4XbEm`VDL'h&RR`bXAL
+    networks:
+      - internal
+    labels:
+      - traefik.enable=false
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data:
